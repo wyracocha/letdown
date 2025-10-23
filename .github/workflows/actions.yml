@@ -46,12 +46,10 @@ jobs:
     env:
       # PAT: ${{ steps.app-token.outputs.token }}
       CR_HOST: ${{ vars.CR_HOST }}
-    permissions:
-      # PERMISO CRÍTICO: Se requiere para publicar/crear un paquete
-      packages: write 
-      # Generalmente se necesita 'read' para hacer el checkout del código
-      contents: read
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
     - name: checkout repo
       uses: actions/checkout@v4 
