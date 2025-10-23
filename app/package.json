@@ -19,6 +19,6 @@
     "@grotto/logysia": "^0.0.5",
     "elysia": "^0.7.21",
     "elysia-helmet": "^1.0.1",
-    "mongoose": "^8.0.0"
+    "mongoose": "^8.9.5"
   }
 }
