@@ -67,6 +67,8 @@ jobs:
     - name: login to ghcr
       shell: bash
       run: make login
+      env:
+        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
     - name: build
       shell: bash
       run: make build_image
