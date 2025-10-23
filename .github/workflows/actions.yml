@@ -53,7 +53,7 @@ jobs:
       shell: bash
       run: make login
       env:
-        CR_PAT: ${{ steps.app-token.outputs.PAT }}
+        CR_PAT: ${{ secrets.PAT }}
     - name: build
       shell: bash
       run: make build_image
