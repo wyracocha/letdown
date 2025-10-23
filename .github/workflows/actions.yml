@@ -31,7 +31,8 @@ jobs:
     steps:
     - name: checkout repo
       uses: actions/checkout@v4
-    - name: app-token
+    - name: generate-token
+      id: app-token
       shell: bash
       run: |
         echo -n "${{ secrets.APP_SECRET_PEM }}" | base64 -d > /tmp/key.pem
