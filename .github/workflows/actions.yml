@@ -26,6 +26,9 @@ jobs:
 
   BUILD_DEPLOY_IMAGE:
     # needs: [ PREPARE ]
+    env:
+      CR_USER: ${{ github.actor }}
+      CR_HOST:  ghcr.io
     outputs:
       CR_PAT: ${{ steps.app-token.outputs.PAT }}
     runs-on: ubuntu-latest
@@ -51,8 +54,6 @@ jobs:
       run: make login
       env:
         CR_PAT: ${{ steps.app-token.outputs.PAT }}
-        CR_USER: ${{ github.actor }}
-        CR_HOST:  ghcr.io
     - name: build
       shell: bash
       run: make build_image
