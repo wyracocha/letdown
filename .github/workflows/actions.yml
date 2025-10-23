@@ -42,7 +42,7 @@ jobs:
         PEM_INPUT: /tmp/key.pem
 
   BUILD_DEPLOY_IMAGE:
-    # needs: [ SECURITY ]
+    needs: [ PREPARE ]
     env:
       PAT: ${{ needs.PREPARE.outputs.token }}
       CR_HOST: ${{ vars.CR_HOST }}
