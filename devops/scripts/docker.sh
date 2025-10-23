@@ -14,7 +14,7 @@ script_login ()
     script_configure_env
     # login to container registry: github
     # echo " .. $PAT - $CR_HOST - $GITHUB_ACTOR"
-    echo $GITHUB_TOKEN | docker login $CR_HOST -u $GITHUB_ACTOR --password-stdin
+    echo $PAT | docker login $CR_HOST -u $GITHUB_ACTOR --password-stdin
 }
 
 script_build ()
