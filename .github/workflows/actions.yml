@@ -58,10 +58,7 @@ jobs:
     - name: generate-token
       id: app-token
       shell: bash
-      run: |
-        # echo -n "${{ secrets.APP_SECRET_PEM }}" | base64 -d > /tmp/key.pem
-        # chmod 600 /tmp/key.pem
-        make github_app
+      run:  make github_app
       env:
         APP_ID: ${{ vars.APP_ID}}
         PRIVATE_KEY: ${{ secrets.APP_SECRET_PEM }}
