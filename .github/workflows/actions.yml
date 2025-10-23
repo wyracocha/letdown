@@ -1,7 +1,4 @@
 name: ci/cd
-permissions:
-  contents: read
-  packages: write
 on: [push]
 jobs:
   # SECURITY:
@@ -49,6 +46,11 @@ jobs:
     env:
       # PAT: ${{ steps.app-token.outputs.token }}
       CR_HOST: ${{ vars.CR_HOST }}
+    permissions:
+      # PERMISO CRÍTICO: Se requiere para publicar/crear un paquete
+      packages: write 
+      # Generalmente se necesita 'read' para hacer el checkout del código
+      contents: read
     runs-on: ubuntu-latest
     steps:
     - name: checkout repo
