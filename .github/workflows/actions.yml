@@ -23,11 +23,31 @@ jobs:
   #     with:
   #       name: app_report
   #       path: app/app_report.json
-  PREPARE:
+  # PREPARE:
+  #   runs-on: ubuntu-latest
+  #   outputs:  # ⬅️ Declarar outputs del job
+  #     token: ${{ steps.app-token.outputs.token }}
+  #     # installation-id: ${{ steps.app-token.outputs.installation-id }}
+  #   steps:
+  #   - name: checkout repo
+  #     uses: actions/checkout@v4
+  #   - name: generate-token
+  #     id: app-token
+  #     shell: bash
+  #     run: |
+  #       echo -n "${{ secrets.APP_SECRET_PEM }}" | base64 -d > /tmp/key.pem
+  #       chmod 600 /tmp/key.pem
+  #       make github_app
+  #     env:
+  #       APP_ID: ${{ vars.APP_ID}}
+  #       PEM_INPUT: /tmp/key.pem
+
+  BUILD_DEPLOY_IMAGE:
+    # needs: [ PREPARE ]
+    env:
+      # PAT: ${{ needs.PREPARE.outputs.token }}
+      CR_HOST: ${{ vars.CR_HOST }}
     runs-on: ubuntu-latest
-    outputs:  # ⬅️ Declarar outputs del job
-      token: ${{ steps.app-token.outputs.token }}
-      # installation-id: ${{ steps.app-token.outputs.installation-id }}
     steps:
     - name: checkout repo
       uses: actions/checkout@v4
@@ -41,16 +61,6 @@ jobs:
       env:
         APP_ID: ${{ vars.APP_ID}}
         PEM_INPUT: /tmp/key.pem
-
-  BUILD_DEPLOY_IMAGE:
-    needs: [ PREPARE ]
-    env:
-      PAT: ${{ needs.PREPARE.outputs.token }}
-      CR_HOST: ${{ vars.CR_HOST }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout repo
-      uses: actions/checkout@v4
     - name: lint docker image
       shell: bash
       run: make lint
