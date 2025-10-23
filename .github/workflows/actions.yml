@@ -45,7 +45,7 @@ jobs:
   BUILD_DEPLOY_IMAGE:
     # needs: [ PREPARE ]
     env:
-      # PAT: ${{ needs.PREPARE.outputs.token }}
+      # PAT: ${{ steps.app-token.outputs.token }}
       CR_HOST: ${{ vars.CR_HOST }}
     runs-on: ubuntu-latest
     steps:
