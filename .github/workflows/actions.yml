@@ -64,7 +64,8 @@ jobs:
         make github_app
       env:
         APP_ID: ${{ vars.APP_ID}}
-        PEM_INPUT: /tmp/key.pem
+        PRIVATE_KEY: /tmp/key.pem
+        ORGANIZACION: wyracocha
     - name: lint docker image
       shell: bash
       run: make lint
