@@ -23,7 +23,7 @@ script_build ()
     script_load_env
     # configure local env vars
     script_configure_env
-    docker build -t $CR_HOST/$IMAGE_NAME:$IMAGE_TAG ./app
+    docker build -t $CR_HOST/$IMAGE_NAME:$IMAGE_TAG ./app/backend
     docker tag $CR_HOST/$IMAGE_NAME:$IMAGE_TAG $CR_HOST/$IMAGE_NAME:latest
 }
 
@@ -43,7 +43,7 @@ script_lint ()
     script_load_env
     # configure local env vars
     script_configure_env
-    docker run --rm -i ghcr.io/hadolint/hadolint < app/Dockerfile
+    docker run --rm -i ghcr.io/hadolint/hadolint < app/backend/Dockerfile
 }
 
 "$@"
