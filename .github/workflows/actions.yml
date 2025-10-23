@@ -22,31 +22,12 @@ jobs:
   #     with:
   #       name: app_report
   #       path: app/app_report.json
-  # PREPARE:
-  #   runs-on: ubuntu-latest
-  #   outputs:  # ⬅️ Declarar outputs del job
-  #     token: ${{ steps.app-token.outputs.token }}
-  #     # installation-id: ${{ steps.app-token.outputs.installation-id }}
-  #   steps:
-  #   - name: checkout repo
-  #     uses: actions/checkout@v4
-  #   - name: generate-token
-  #     id: app-token
-  #     shell: bash
-  #     run: |
-  #       echo -n "${{ secrets.APP_SECRET_PEM }}" | base64 -d > /tmp/key.pem
-  #       chmod 600 /tmp/key.pem
-  #       make github_app
-  #     env:
-  #       APP_ID: ${{ vars.APP_ID}}
-  #       PEM_INPUT: /tmp/key.pem
+
 
   BUILD_DEPLOY_IMAGE:
     # needs: [ PREPARE ]
-    env:
-      CR_PAT: ${{ secrets.DOCKERHUB_PAT }}
-      CR_USER: ${{ vars.DOCKERHUB_USER }}
-      CR_HOST: ${{ vars.DOCKERHUB_HOST }}
+    outputs:
+      CR_PAT: ${{ steps.app-token.outputs.PAT }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -54,14 +35,14 @@ jobs:
     steps:
     - name: checkout repo
       uses: actions/checkout@v4 
-    # - name: generate-token
-    #   id: app-token
-    #   shell: bash
-    #   run:  make github_app
-    #   env:
-    #     APP_ID: ${{ vars.APP_ID}}
-    #     PRIVATE_KEY: ${{ secrets.APP_SECRET_PEM }}
-    #     ORGANIZACION: wyracocha
+    - name: generate-token
+      id: app-token
+      shell: bash
+      run:  make github_app
+      env:
+        APP_ID: ${{ vars.APP_ID}}
+        PRIVATE_KEY: ${{ secrets.APP_SECRET_PEM }}
+        ORGANIZACION: wyracocha
     - name: lint docker image
       shell: bash
       run: make lint
@@ -69,7 +50,9 @@ jobs:
       shell: bash
       run: make login
       env:
-        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        CR_PAT: ${{ steps.app-token.outputs.PAT }}
+        CR_USER: ${{ github.actor }}
+        CR_HOST:  ghcr.io
     - name: build
       shell: bash
       run: make build_image

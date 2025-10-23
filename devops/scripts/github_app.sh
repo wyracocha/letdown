@@ -47,4 +47,4 @@ if [ -z "$access_token" ]; then
   exit 1
 fi
 # Exportar el token de acceso como variable de entorno
-echo "PAT=$access_token" >> $GITHUB_ENV
+echo "PAT=$access_token" >> $GITHUB_OUTPUT
