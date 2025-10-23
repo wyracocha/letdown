@@ -1,5 +1,7 @@
 name: ci/cd
-
+permissions:
+  contents: read
+  packages: write
 on: [push]
 jobs:
   # SECURITY:
