@@ -98,8 +98,13 @@ resource "azurerm_storage_account" "stfront" {
 
 }
 
+resource "azurerm_storage_account_static_website" "website" {
+  storage_account_id = azurerm_storage_account.stfront.id
+  error_404_document = "404.html"
+  index_document     = "index.html"
+}
 # 4. Sube todos los archivos del sitio web
-resource "azurerm_storage_blob" "site_blobs" {
+resource "azurerm_storage_blob" "site_blobs" { 
   # fileset() busca de forma recursiva todos los archivos en la carpeta
   for_each               = fileset("dist/", "**")
   name                   = each.value
@@ -110,4 +115,5 @@ resource "azurerm_storage_blob" "site_blobs" {
 
   # Asigna el tipo de contenido basándose en la extensión del archivo
   content_type = lookup(local.mimetype, split(".", each.value)[length(split(".", each.value)) - 1], "application/octet-stream")
+  depends_on = [ azurerm_storage_account_static_website.website ]
 }
