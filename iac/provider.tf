@@ -1,7 +1,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg_global_tfstate"
-    storage_account_name = "wyracochatstates01"
+    storage_account_name = "letdowntfstates"
     container_name       = "tfstates"
     key                  = "dev.terraform.tfstate"
   }
