@@ -13,8 +13,8 @@ script_login ()
     # configure local env vars
     script_configure_env
     # login to container registry: github
-    echo " .. $PAT - $CR_HOST - $GITHUB_ACTOR"
-    echo $PAT | docker login $CR_HOST -u $GITHUB_ACTOR --password-stdin
+    # echo " .. $PAT - $CR_HOST - $GITHUB_ACTOR"
+    echo $CR_PAT | docker login $CR_HOST -u $CR_USER --password-stdin
 }
 
 script_build ()
@@ -23,7 +23,7 @@ script_build ()
     script_load_env
     # configure local env vars
     script_configure_env
-    docker build -t $CR_HOST/$IMAGE_NAME:$IMAGE_TAG ./app
+    docker build -t $CR_HOST/$IMAGE_NAME:$IMAGE_TAG ./app/backend
     docker tag $CR_HOST/$IMAGE_NAME:$IMAGE_TAG $CR_HOST/$IMAGE_NAME:latest
 }
 
@@ -43,7 +43,7 @@ script_lint ()
     script_load_env
     # configure local env vars
     script_configure_env
-    docker run --rm -i ghcr.io/hadolint/hadolint < app/Dockerfile
+    docker run --rm -i ghcr.io/hadolint/hadolint < app/backend/Dockerfile
 }
 
 "$@"

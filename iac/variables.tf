@@ -65,7 +65,46 @@ variable "JWT_SECRET" {
   description = "JWT SECRET"
 }
 
-variable "MONGODB_URI" {
+variable "MONGO_URI" {
   type = string
   description = "mongodb uri"
+}
+
+variable "ADMIN_USER" {
+  type = string
+  description = "mongodb uri"
+}
+variable "ADMIN_PASS" {
+  type = string
+  description = "mongodb uri"
+}
+
+variable "AZURE_STORAGE_ACCOUNT" {
+  type = string
+  description = "mongodb uri"
+}
+variable "AZURE_STORAGE_KEY" {
+  type = string
+  description = "mongodb uri"
+}
+variable "AZURE_CONTAINER_NAME" {
+  type = string
+  description = "mongodb uri"
+}
+
+
+#--------------- FRONT
+locals {
+  mimetype = {
+    html  = "text/html"
+    css   = "text/css"
+    js    = "application/javascript"
+    png   = "image/png"
+    jpg   = "image/jpeg"
+    jpeg  = "image/jpeg"
+    gif   = "image/gif"
+    svg   = "image/svg+xml"
+    ico   = "image/x-icon"
+    json  = "application/json"
+  }
 }

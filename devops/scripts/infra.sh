@@ -13,6 +13,7 @@ script_terraform ()
     script_configure_env
     # running base tf script
     docker run -v "$PWD/iac:/app" \
+        -v "$PWD/dist:/dist" \
         -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
         -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
         -e ARM_TENANT_ID=$ARM_TENANT_ID \
@@ -23,9 +24,15 @@ script_terraform ()
         -e TF_VAR_PAT=$PAT \
         -e TF_VAR_IMAGE_TAG=$IMAGE_TAG  \
         -e TF_VAR_JWT_SECRET=$JWT_SECRET \
-        -e TF_VAR_MONGODB_URI=$MONGODB_URI \
+        -e TF_VAR_MONGO_URI=$MONGO_URI \
+        -e TF_VAR_ADMIN_USER=$ADMIN_USER \
+        -e TF_VAR_ADMIN_PASS=$ADMIN_PASS \
+        -e TF_VAR_JWT_SECRET=$JWT_SECRET \
+        -e TF_VAR_AZURE_STORAGE_ACCOUNT=$AZURE_STORAGE_ACCOUNT \
+        -e TF_VAR_AZURE_STORAGE_KEY=$AZURE_STORAGE_KEY \
+        -e TF_VAR_AZURE_CONTAINER_NAME=$AZURE_CONTAINER_NAME \
         -w /app \
-    hashicorp/terraform:1.6 $1
+    hashicorp/terraform:latest $1
 }
 
 script_terraform_init ()

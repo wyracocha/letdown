@@ -1,37 +1,60 @@
 name: ci/cd
-
 on: [push]
 jobs:
-  SECURITY:
-    env:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    runs-on: ubuntu-20.04
+  # SECURITY:
+  #   env:
+  #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #   - name: checkout repo
+  #     uses: actions/checkout@main
+  #   - name: scan iac
+  #     shell: bash
+  #     run: make scan_iac
+  #   - uses: actions/upload-artifact@v3
+  #     with:
+  #       name: iac_report
+  #       path: iac/iac_report.json
+  #   - name: scan code
+  #     shell: bash
+  #     run: make scan_app
+  #   - uses: actions/upload-artifact@v3
+  #     with:
+  #       name: app_report
+  #       path: app/app_report.json
+
+  FRONT:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
     - name: checkout repo
-      uses: actions/checkout@main
-    - name: scan iac
+      uses: actions/checkout@v4 
+    - name: front install
       shell: bash
-      run: make scan_iac
-    - uses: actions/upload-artifact@v3
+      run: make front_install
+    - name: front build
+      shell: bash
+      run: make front_build
+    - uses: actions/upload-artifact@v4
+      name: artifact upload
       with:
-        name: iac_report
-        path: iac/iac_report.json
-#    - name: scan code
-#      shell: bash
-#      run: make scan_app
-#    - uses: actions/upload-artifact@v3
-#      with:
-#        name: app_report
-#        path: app/app_report.json
+        name: dist
+        path: app/frontend/dist/
   BUILD_DEPLOY_IMAGE:
-    needs: [ SECURITY ]
+    # needs: [ PREPARE ]
     env:
-      PAT: ${{ secrets.PAT }}
-      CR_HOST: ${{ vars.CR_HOST }}
-    runs-on: ubuntu-20.04
+      CR_USER: ${{ github.actor }}
+      CR_HOST:  ${{ vars.CR_HOST }}
+      CR_PAT: ${{ secrets.PAT }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
     - name: checkout repo
-      uses: actions/checkout@main
+      uses: actions/checkout@v4 
     - name: lint docker image
       shell: bash
       run: make lint
@@ -45,7 +68,7 @@ jobs:
       shell: bash
       run: make deploy_image
   INFRA_PLAN:
-    needs: [ SECURITY ]
+    needs: [ BUILD_DEPLOY_IMAGE, FRONT ]
     env:
       PAT: ${{ secrets.PAT }}
       CR_HOST: ${{ vars.CR_HOST }}
@@ -53,23 +76,35 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      MONGO_URI: ${{secrets.MONGO_URI}}
+      ADMIN_USER: ${{ secrets.ADMIN_USER }}
+      ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      PORT: ${{ vars.PORT }}
-    runs-on: ubuntu-20.04
+      AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+      AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+      AZURE_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
+      # JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      # MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      # PORT: ${{ vars.PORT }}
+    runs-on: ubuntu-latest
+    environment: dev
     steps:
     - name: checkout repo
       uses: actions/checkout@main
+    - uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist
     - name: init terraform
       shell: bash
       run: make init
     - name: plan terraform
-      shell: bash
+      shell: bash 
       run: make plan
   INFRA_APPLY:
     needs: [ INFRA_PLAN ]
     environment: 
-      name: apply
+      name: dev
     env:
       PAT: ${{ secrets.PAT }}
       CR_HOST: ${{ vars.CR_HOST }}
@@ -77,13 +112,17 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      PORT: ${{ vars.PORT }}
-    runs-on: ubuntu-20.04
+      # JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      # PORT: ${{ vars.PORT }}
+    runs-on: ubuntu-latest
     steps:
     - name: checkout repo
       uses: actions/checkout@main
+    - uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist
     - name: init terraform
       shell: bash
       run: make init
@@ -93,27 +132,27 @@ jobs:
     - name: apply terraform
       shell: bash
       run: make apply
-  INFRA_DESTROY:
-    needs: [ INFRA_APPLY ]
-    environment: 
-      name: apply
-    env:
-      PAT: ${{ secrets.PAT }}
-      CR_HOST: ${{ vars.CR_HOST }}
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      PORT: ${{ vars.PORT }}
-    runs-on: ubuntu-20.04
-    steps:
-    - name: checkout repo
-      uses: actions/checkout@main
-    - name: init terraform
-      shell: bash
-      run: make init
-    - name: apply terraform
-      shell: bash
-      run: make destroy
+  # INFRA_DESTROY:
+  #   needs: [ INFRA_APPLY ]
+  #   environment: 
+  #     name: apply
+  #   env:
+  #     PAT: ${{ secrets.PAT }}
+  #     CR_HOST: ${{ vars.CR_HOST }}
+  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  #     MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  #     PORT: ${{ vars.PORT }}
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #   - name: checkout repo
+  #     uses: actions/checkout@main
+  #   - name: init terraform
+  #     shell: bash
+  #     run: make init
+  #   - name: apply terraform
+  #     shell: bash
+  #     run: make destroy
