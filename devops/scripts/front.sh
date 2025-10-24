@@ -12,7 +12,6 @@ script_front_install ()
     node:slim npm install
 }
 
-
 script_front_build ()
 {
   docker run --rm -w /app \
