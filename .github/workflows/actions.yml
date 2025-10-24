@@ -51,17 +51,18 @@ jobs:
       run: make deploy_image
   INFRA_PLAN:
     needs: [ BUILD_DEPLOY_IMAGE ]
-    env:
-      PAT: ${{ secrets.PAT }}
-      CR_HOST: ${{ vars.CR_HOST }}
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    # env:
+      # PAT: ${{ secrets.PAT }}
+      # CR_HOST: ${{ vars.CR_HOST }}
+      # ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      # ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      # ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      # ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       # JWT_SECRET: ${{ secrets.JWT_SECRET }}
       # MONGODB_URI: ${{ secrets.MONGODB_URI }}
       # PORT: ${{ vars.PORT }}
     runs-on: ubuntu-latest
+    environment: dev
     steps:
     - name: checkout repo
       uses: actions/checkout@main
