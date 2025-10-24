@@ -23,7 +23,17 @@ jobs:
   #       name: app_report
   #       path: app/app_report.json
 
-
+  # FRONT:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   steps:
+  #   - name: checkout repo
+  #     uses: actions/checkout@v4 
+  #   - name: lint docker image
+  #     shell: bash
+  #     run: make front_build
   BUILD_DEPLOY_IMAGE:
     # needs: [ PREPARE ]
     env:
@@ -59,6 +69,12 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       MONGO_URI: ${{secrets.MONGO_URI}}
+      ADMIN_USER: ${{ secrets.ADMIN_USER }}
+      ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+      AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+      AZURE_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
       # JWT_SECRET: ${{ secrets.JWT_SECRET }}
       # MONGODB_URI: ${{ secrets.MONGODB_URI }}
       # PORT: ${{ vars.PORT }}

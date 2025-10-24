@@ -41,6 +41,26 @@ resource "azurerm_container_app" "example" {
         name = "MONGO_URI"
         value = var.MONGO_URI
       }
+      env {
+        name = "ADMIN_USER"
+        value = var.ADMIN_USER
+      }
+      env {
+        name = "ADMIN_PASS"
+        value = var.ADMIN_PASS
+      }
+      env {
+        name = "AZURE_STORAGE_ACCOUNT"
+        value = var.AZURE_STORAGE_ACCOUNT
+      }
+      env {
+        name = "AZURE_STORAGE_KEY"
+        value = var.AZURE_STORAGE_KEY
+      }
+      env {
+        name = "AZURE_CONTAINER_NAME"
+        value = var.AZURE_CONTAINER_NAME
+      }
     }
   }
 

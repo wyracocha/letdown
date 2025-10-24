@@ -24,6 +24,12 @@ script_terraform ()
         -e TF_VAR_IMAGE_TAG=$IMAGE_TAG  \
         -e TF_VAR_JWT_SECRET=$JWT_SECRET \
         -e TF_VAR_MONGO_URI=$MONGO_URI \
+        -e TF_VAR_ADMIN_USER=$ADMIN_USER \
+        -e TF_VAR_ADMIN_PASS=$ADMIN_PASS \
+        -e TF_VAR_JWT_SECRET=$JWT_SECRET \
+        -e TF_VAR_AZURE_STORAGE_ACCOUNT=$AZURE_STORAGE_ACCOUNT \
+        -e TF_VAR_AZURE_STORAGE_KEY=$AZURE_STORAGE_KEY \
+        -e TF_VAR_AZURE_CONTAINER_NAME=$AZURE_CONTAINER_NAME \
         -w /app \
     hashicorp/terraform:latest $1
 }

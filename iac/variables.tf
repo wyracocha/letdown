@@ -69,3 +69,25 @@ variable "MONGO_URI" {
   type = string
   description = "mongodb uri"
 }
+
+variable "ADMIN_USER" {
+  type = string
+  description = "mongodb uri"
+}
+variable "ADMIN_PASS" {
+  type = string
+  description = "mongodb uri"
+}
+
+variable "AZURE_STORAGE_ACCOUNT" {
+  type = string
+  description = "mongodb uri"
+}
+variable "AZURE_STORAGE_KEY" {
+  type = string
+  description = "mongodb uri"
+}
+variable "AZURE_CONTAINER_NAME" {
+  type = string
+  description = "mongodb uri"
+}
