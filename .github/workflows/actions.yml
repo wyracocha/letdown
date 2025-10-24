@@ -95,9 +95,6 @@ jobs:
       with:
         name: dist
         path: dist
-    - name: debug artifact
-      run: |
-        ls -R 
     - name: init terraform
       shell: bash
       run: make init
