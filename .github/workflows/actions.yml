@@ -58,6 +58,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      MONGO_URI: ${{secrets.MONGO_URI}}
       # JWT_SECRET: ${{ secrets.JWT_SECRET }}
       # MONGODB_URI: ${{ secrets.MONGODB_URI }}
       # PORT: ${{ vars.PORT }}
@@ -72,33 +73,33 @@ jobs:
     - name: plan terraform
       shell: bash 
       run: make plan
-  # INFRA_APPLY:
-  #   needs: [ INFRA_PLAN ]
-  #   environment: 
-  #     name: apply
-  #   env:
-  #     PAT: ${{ secrets.PAT }}
-  #     CR_HOST: ${{ vars.CR_HOST }}
-  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  #     MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  #     PORT: ${{ vars.PORT }}
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #   - name: checkout repo
-  #     uses: actions/checkout@main
-  #   - name: init terraform
-  #     shell: bash
-  #     run: make init
-  #   - name: plan terraform
-  #     shell: bash
-  #     run: make plan
-  #   - name: apply terraform
-  #     shell: bash
-  #     run: make apply
+  INFRA_APPLY:
+    needs: [ INFRA_PLAN ]
+    environment: 
+      name: dev
+    env:
+      PAT: ${{ secrets.PAT }}
+      CR_HOST: ${{ vars.CR_HOST }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      # JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      # PORT: ${{ vars.PORT }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@main
+    - name: init terraform
+      shell: bash
+      run: make init
+    - name: plan terraform
+      shell: bash
+      run: make plan
+    - name: apply terraform
+      shell: bash
+      run: make apply
   # INFRA_DESTROY:
   #   needs: [ INFRA_APPLY ]
   #   environment: 
