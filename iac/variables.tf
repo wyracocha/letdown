@@ -91,3 +91,20 @@ variable "AZURE_CONTAINER_NAME" {
   type = string
   description = "mongodb uri"
 }
+
+
+#--------------- FRONT
+locals {
+  mimetype = {
+    html  = "text/html"
+    css   = "text/css"
+    js    = "application/javascript"
+    png   = "image/png"
+    jpg   = "image/jpeg"
+    jpeg  = "image/jpeg"
+    gif   = "image/gif"
+    svg   = "image/svg+xml"
+    ico   = "image/x-icon"
+    json  = "application/json"
+  }
+}

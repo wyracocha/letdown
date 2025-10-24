@@ -13,6 +13,7 @@ script_terraform ()
     script_configure_env
     # running base tf script
     docker run -v "$PWD/iac:/app" \
+        -v "$PWD/app/frontend/dist:/dist" \
         -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
         -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
         -e ARM_TENANT_ID=$ARM_TENANT_ID \

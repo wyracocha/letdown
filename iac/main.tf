@@ -85,3 +85,29 @@ resource "azurerm_container_app" "example" {
     username = var.USERNAME
   }
 }
+#--------------- FRONT
+
+# 3. Crea la cuenta de almacenamiento
+resource "azurerm_storage_account" "stfront" {
+  name                     = "st${var.PROJECT_NAME}" # Debe ser globalmente único
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  account_kind             = "StorageV2"
+
+}
+
+# 4. Sube todos los archivos del sitio web
+resource "azurerm_storage_blob" "site_blobs" {
+  # fileset() busca de forma recursiva todos los archivos en la carpeta
+  for_each               = fileset("dist/", "**")
+  name                   = each.value
+  storage_account_name   = azurerm_storage_account.stfront.name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "dist/${each.value}"
+
+  # Asigna el tipo de contenido basándose en la extensión del archivo
+  content_type = lookup(local.mimetype, split(".", each.value)[length(split(".", each.value)) - 1], "application/octet-stream")
+}

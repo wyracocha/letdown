@@ -23,17 +23,25 @@ jobs:
   #       name: app_report
   #       path: app/app_report.json
 
-  # FRONT:
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #     packages: write
-  #   steps:
-  #   - name: checkout repo
-  #     uses: actions/checkout@v4 
-  #   - name: lint docker image
-  #     shell: bash
-  #     run: make front_build
+  FRONT:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v4 
+    - name: front install
+      shell: bash
+      run: make front_install
+    - name: front build
+      shell: bash
+      run: make front_build
+    - uses: actions/upload-artifact@v4
+      name: artifact upload
+      with:
+        name: dist
+        path: app/frontend/dist/
   BUILD_DEPLOY_IMAGE:
     # needs: [ PREPARE ]
     env:
@@ -86,6 +94,10 @@ jobs:
     - name: init terraform
       shell: bash
       run: make init
+    - uses: actions/download-artifact@v5
+      with:
+        name: dist
+        path: app/frontend/dist/
     - name: plan terraform
       shell: bash 
       run: make plan
