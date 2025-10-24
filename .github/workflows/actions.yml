@@ -70,7 +70,7 @@ jobs:
       shell: bash
       run: make init
     - name: plan terraform
-      shell: bash
+      shell: bash 
       run: make plan
   # INFRA_APPLY:
   #   needs: [ INFRA_PLAN ]
