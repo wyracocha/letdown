@@ -97,7 +97,7 @@ jobs:
         path: dist
     - name: debug artifact
       run: |
-        ls -R app/frontend
+        ls -R 
     - name: init terraform
       shell: bash
       run: make init
