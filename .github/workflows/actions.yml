@@ -94,6 +94,7 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: dist
+        path: dist
     - name: debug artifact
       run: |
         ls -R app/frontend
@@ -124,6 +125,7 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: dist
+        path: dist
     - name: init terraform
       shell: bash
       run: make init
