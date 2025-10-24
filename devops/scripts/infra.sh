@@ -23,7 +23,7 @@ script_terraform ()
         -e TF_VAR_PAT=$PAT \
         -e TF_VAR_IMAGE_TAG=$IMAGE_TAG  \
         -e TF_VAR_JWT_SECRET=$JWT_SECRET \
-        -e TF_VAR_MONGODB_URI=$MONGODB_URI \
+        -e TF_VAR_MONGO_URI=$MONGO_URI \
         -w /app \
     hashicorp/terraform:latest $1
 }
