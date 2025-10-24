@@ -38,8 +38,8 @@ resource "azurerm_container_app" "example" {
         value = var.JWT_SECRET
       }
       env {
-        name = "MONGODB_URI"
-        value = var.MONGODB_URI
+        name = "MONGO_URI"
+        value = var.MONGO_URI
       }
     }
   }

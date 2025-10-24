@@ -65,7 +65,7 @@ variable "JWT_SECRET" {
   description = "JWT SECRET"
 }
 
-variable "MONGODB_URI" {
+variable "MONGO_URI" {
   type = string
   description = "mongodb uri"
 }
