@@ -28,9 +28,8 @@ jobs:
     # needs: [ PREPARE ]
     env:
       CR_USER: ${{ github.actor }}
-      CR_HOST:  ghcr.io
-    outputs:
-      CR_PAT: ${{ steps.app-token.outputs.PAT }}
+      CR_HOST:  ${{ vars.CR_HOST }}
+      CR_PAT: ${{ secrets.PAT }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,50 +37,40 @@ jobs:
     steps:
     - name: checkout repo
       uses: actions/checkout@v4 
-    - name: generate-token
-      id: app-token
-      shell: bash
-      run:  make github_app
-      env:
-        APP_ID: ${{ vars.APP_ID}}
-        PRIVATE_KEY: ${{ secrets.APP_SECRET_PEM }}
-        ORGANIZACION: wyracocha
     - name: lint docker image
       shell: bash
       run: make lint
     - name: login to ghcr
       shell: bash
       run: make login
-      env:
-        CR_PAT: ${{ secrets.PAT }}
     - name: build
       shell: bash
       run: make build_image
     - name: deploy
       shell: bash
       run: make deploy_image
-  # INFRA_PLAN:
-  #   needs: [ SECURITY ]
-  #   env:
-  #     PAT: ${{ secrets.PAT }}
-  #     CR_HOST: ${{ vars.CR_HOST }}
-  #     ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  #     ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  #     ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  #     MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  #     PORT: ${{ vars.PORT }}
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #   - name: checkout repo
-  #     uses: actions/checkout@main
-  #   - name: init terraform
-  #     shell: bash
-  #     run: make init
-  #   - name: plan terraform
-  #     shell: bash
-  #     run: make plan
+  INFRA_PLAN:
+    needs: [ BUILD_DEPLOY_IMAGE ]
+    env:
+      PAT: ${{ secrets.PAT }}
+      CR_HOST: ${{ vars.CR_HOST }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      # JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      # MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      # PORT: ${{ vars.PORT }}
+    runs-on: ubuntu-20.04
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@main
+    - name: init terraform
+      shell: bash
+      run: make init
+    - name: plan terraform
+      shell: bash
+      run: make plan
   # INFRA_APPLY:
   #   needs: [ INFRA_PLAN ]
   #   environment: 
