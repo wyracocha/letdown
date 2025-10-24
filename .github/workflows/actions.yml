@@ -68,7 +68,7 @@ jobs:
       shell: bash
       run: make deploy_image
   INFRA_PLAN:
-    needs: [ BUILD_DEPLOY_IMAGE ]
+    needs: [ BUILD_DEPLOY_IMAGE, FRONT ]
     env:
       PAT: ${{ secrets.PAT }}
       CR_HOST: ${{ vars.CR_HOST }}
