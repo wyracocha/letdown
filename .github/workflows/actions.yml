@@ -61,7 +61,7 @@ jobs:
       # JWT_SECRET: ${{ secrets.JWT_SECRET }}
       # MONGODB_URI: ${{ secrets.MONGODB_URI }}
       # PORT: ${{ vars.PORT }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: checkout repo
       uses: actions/checkout@main
