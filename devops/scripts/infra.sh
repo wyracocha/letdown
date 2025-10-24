@@ -25,7 +25,7 @@ script_terraform ()
         -e TF_VAR_JWT_SECRET=$JWT_SECRET \
         -e TF_VAR_MONGODB_URI=$MONGODB_URI \
         -w /app \
-    hashicorp/terraform:1.6 $1
+    hashicorp/terraform:latest $1
 }
 
 script_terraform_init ()
