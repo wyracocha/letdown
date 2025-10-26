@@ -1,0 +1,243 @@
+@use './styles.scss';
+
+.weather-icon {
+  margin-left: 8px;
+  font-size: 1.3rem;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.weather-temp {
+  position: absolute;
+  top: -0.7em;
+  right: -1.1em;
+  font-size: 8px;
+  color: #fff;
+  background: transparent;
+  padding: 1px 5px;
+  border-radius: 8px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  z-index: 1;
+}
+
+.weather-icon .wi-day-sunny {
+  color: #FFD600;
+  filter: drop-shadow(0 0 4px #FFD600);
+}
+
+.weather-icon .wi-cloudy {
+  color: #4FC3F7;
+  filter: drop-shadow(0 0 4px #4FC3F7);
+}
+
+.weather-icon .wi-day-fog {
+  color: #FFECB3;
+  filter: drop-shadow(0 0 4px #FFECB3);
+}
+
+.weather-icon .wi-rain {
+  color: #2196F3;
+  filter: drop-shadow(0 0 4px #2196F3);
+}
+
+.weather-icon .wi-thunderstorm {
+  color: #FF9800;
+  filter: drop-shadow(0 0 4px #FF9800);
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+.home-container {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+
+  body,
+  html {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    background: #171923 !important;
+    margin: 0 !important;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    position: fixed;
+  }
+
+  .home-container {
+    background: #171923;
+    overflow: hidden;
+  }
+
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 12px;
+  background: linear-gradient(180deg, #043286 0%, #001430 100%);
+  // border-bottom: 1px solid #222;
+  height: 80px;
+  // width: 100vw;
+  max-width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 100%;
+  position: relative;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 110px;
+  max-width: 140px;
+}
+
+.time {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.date {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+// .header-center {
+//   flex: 1;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+.logo {
+  width: 150px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.header-right {
+  min-width: 40px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: 12px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  background: #f5f5f5;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.arrow {
+  font-size: 0.85rem;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  height: 1em;
+  transition: transform 0.3s cubic-bezier(0.4, 0.8, 0.4, 1);
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 120px;
+  z-index: 200;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0.8, 0.4, 1), transform 0.3s cubic-bezier(0.4, 0.8, 0.4, 1);
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-menu li {
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.dropdown-menu li:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .mobile-header {
+    max-width: 480px;
+
+    .dropdown-btn {
+      background: transparent;
+      border: 1px solid #fff;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+  }
+}

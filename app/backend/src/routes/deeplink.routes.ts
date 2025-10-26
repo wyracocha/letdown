@@ -29,6 +29,9 @@ const router = Router();
  *         url:
  *           type: string
  *           example: yango://promo/123
+ *         icon:
+ *          type: string
+ *          example: https://example.com/icon.png
  *         date:
  *           type: string
  *           format: date-time
