@@ -10,6 +10,8 @@ export default function SplashScreen() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const LOGIN_USER = import.meta.env.VITE_LOGIN_USER;
+  const LOGIN_PASSWORD = import.meta.env.VITE_LOGIN_PASSWORD;
 
   useEffect(() => {
     const loadVideos = async () => {
@@ -18,9 +20,22 @@ export default function SplashScreen() {
         // Limpiar cache viejo (más de 7 días)
         // await clearOldCache();
 
+        // Login para obtener el token
+        const loginRes = await fetch(`${API_BASE_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user: LOGIN_USER, password: LOGIN_PASSWORD })
+        });
+        const loginData = await loginRes.json();
+        const token = loginData.token;
+
+        // Guardar el token en localStorage para uso posterior
+        localStorage.setItem('token', token);
+
+        // Obtener los videos con el token
         const res = await fetch(`${API_BASE_URL}/media`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         const data = await res.json();
@@ -34,7 +49,6 @@ export default function SplashScreen() {
         
         // TODO: Descomentar cuando se configure CORS en Azure Blob Storage
         // Descargar y cachear todos los videos en IndexedDB
-        // const token = localStorage.getItem('token') || '';
         // const cachedVideoUrls = await Promise.all(
         //   videoData.map(v => downloadAndCacheVideo(v.url, token))
         // );
@@ -49,7 +63,7 @@ export default function SplashScreen() {
     };
 
     loadVideos();
-  }, [API_BASE_URL]);
+  }, [API_BASE_URL, LOGIN_USER, LOGIN_PASSWORD]);
 
   useEffect(() => {
     if (videos.length > 0 && playing && videoRef.current) {

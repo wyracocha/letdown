@@ -19,7 +19,15 @@ function BannerImage({ src, alt }: { src: string; alt: string }) {
         src={src}
         alt={alt}
         className="banner-img"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 18, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          objectFit: 'cover', // Quizás deba ser contain dependiendo del diseño
+          objectPosition: 'center',
+          borderRadius: 18, 
+          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+          background: 'linear-gradient(180deg, #001430 0%, #043286 50%, #001430 100%)' // Fondo para los espacios vacíos
+        }}
         onLoad={() => setLoading(false)}
       />
     </div>

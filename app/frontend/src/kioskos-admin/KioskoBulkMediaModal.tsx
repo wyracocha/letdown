@@ -41,7 +41,7 @@ export default function KioskoBulkMediaModal({ show, onHide, kioskos, onSuccess 
     try {
       const formData = new FormData();
       files.forEach(f => formData.append('videos', f));
-      const uploadRes = await fetch('http://localhost:3000/api/upload', {
+      const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE_URL}/upload`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem('token') || ''}` },
         body: formData,
@@ -52,7 +52,7 @@ export default function KioskoBulkMediaModal({ show, onHide, kioskos, onSuccess 
       const medias: Media[] = [];
       for (const fileObj of uploadData.uploaded) {
         const url = fileObj.url;
-        const mediaRes = await fetch('http://localhost:3000/api/media', {
+        const mediaRes = await fetch(`${import.meta.env.VITE_API_BASE_URL}/media`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export default function KioskoBulkMediaModal({ show, onHide, kioskos, onSuccess 
       // Actualizar kioskos
       for (const kiosko of kioskos) {
         const updated: Kiosko = { ...kiosko, medias: [...(kiosko.medias || []), ...medias] };
-        await fetch(`http://localhost:3000/api/kiosko/${kiosko._id}`, {
+        await fetch(`${import.meta.env.VITE_API_BASE_URL}/kiosko/${kiosko._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
