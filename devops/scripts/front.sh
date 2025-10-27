@@ -15,6 +15,9 @@ script_front_install ()
 script_front_build ()
 {
   docker run --rm -w /app \
+    -e VITE_API_BASE_URL=$VITE_API_BASE_URL \
+    -e VITE_LOGIN_USER=$VITE_LOGIN_USER \
+    -e VITE_LOGIN_PASSWORD=$VITE_LOGIN_PASSWORD \
     -v "$PWD/app/frontend:/app"  \
     node:slim npm run build
 }
