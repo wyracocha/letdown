@@ -8,7 +8,7 @@ const options = [
   'Ayuda',
   'Idioma',
   'KioskosIA',
-  'FAQ',
+  'FAQ!',
   'Soporte',
 ];
 
