@@ -119,6 +119,9 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       # JWT_SECRET: ${{ secrets.JWT_SECRET }}
       MONGO_URI: ${{ secrets.MONGO_URI }}
+      AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+      AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+      AZURE_CONTAINER_NAME: ${{ secrets.AZURE_CONTAINER_NAME }}
       # PORT: ${{ vars.PORT }}
     runs-on: ubuntu-latest
     steps:
