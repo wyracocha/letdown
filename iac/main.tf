@@ -112,6 +112,7 @@ resource "azurerm_storage_blob" "site_blobs" {
   storage_container_name = "$web"
   type                   = "Block"
   source                 = "/dist/${each.value}"
+  source_content         = filemd5("/dist/${each.value}")
   cache_control          = "no-cache, no-store, must-revalidate"
 
 
@@ -120,3 +121,4 @@ resource "azurerm_storage_blob" "site_blobs" {
   depends_on = [ azurerm_storage_account_static_website.website ]
 
 }
+
