@@ -60,7 +60,7 @@ export const uploadVideos = async (req: Request, res: Response) => {
     // 3️⃣ Revisión de variables clave (sin mostrar valores reales)
     if (!process.env.AZURE_STORAGE_ACCOUNT) details.push("Falta AZURE_STORAGE_ACCOUNT");
     if (!process.env.AZURE_STORAGE_KEY) details.push("Falta AZURE_STORAGE_KEY");
-    if (!process.env.AZURE_STORAGE_CONNECTION_STRING) details.push("Falta AZURE_STORAGE_CONNECTION_STRING");
+    if (!process.env.AZURE_CONTAINER_NAME) details.push("Falta AZURE_CONTAINER_NAME");
   
     // 4️⃣ Revisión de datos del archivo recibido
     if (!req.file) {
