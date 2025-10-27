@@ -112,11 +112,12 @@ resource "azurerm_storage_blob" "site_blobs" {
   storage_container_name = "$web"
   type                   = "Block"
   source                 = "/dist/${each.value}"
-  cache_control          = "no-cache, no-store, must-revalidate"
+  cache_control          = "no-cache"
+  content_md5            = filemd5("/dist/${each.value}")
 
-  metadata = {
-    content_hash = filemd5("/dist/${each.value}")
-  }
+  # metadata = {
+  #   content_hash = filemd5("/dist/${each.value}")
+  # }
   # Asigna el tipo de contenido basándose en la extensión del archivo
   content_type = lookup(local.mimetype, split(".", each.value)[length(split(".", each.value)) - 1], "application/octet-stream")
   depends_on = [ azurerm_storage_account_static_website.website ]
