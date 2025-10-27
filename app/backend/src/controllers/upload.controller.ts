@@ -49,7 +49,37 @@ export const uploadVideos = async (req: Request, res: Response) => {
       uploaded,
     });
   } catch (error: any) {
-    console.error("Error al subir a Azure:", error);
-    res.status(500).json({ message: "Error al subir videos", error:error });
+    let details = [];
+  
+    // 1️⃣ Mensaje base
+    details.push(`Mensaje: ${error.message || "Error desconocido"}`);
+  
+    // 2️⃣ Código del error (si existe)
+    if (error.code) details.push(`Código: ${error.code}`);
+  
+    // 3️⃣ Revisión de variables clave (sin mostrar valores reales)
+    if (!process.env.AZURE_STORAGE_ACCOUNT) details.push("Falta AZURE_STORAGE_ACCOUNT");
+    if (!process.env.AZURE_STORAGE_KEY) details.push("Falta AZURE_STORAGE_KEY");
+    if (!process.env.AZURE_STORAGE_CONNECTION_STRING) details.push("Falta AZURE_STORAGE_CONNECTION_STRING");
+  
+    // 4️⃣ Revisión de datos del archivo recibido
+    if (!req.file) {
+      details.push("req.file no definido (multer no procesó el archivo)");
+    } else {
+      details.push(`Archivo: ${req.file.originalname} (${req.file.mimetype}, ${req.file.size} bytes)`);
+    }
+  
+    // 5️⃣ Revisión de container name (si lo usas desde variable o constante)
+    if (!process.env.AZURE_STORAGE_CONTAINER && !containerName) {
+      details.push("containerName no definido o vacío");
+    }
+  
+    // 6️⃣ Combinar todo en un mensaje de salida
+    const message = details.join(" | ");
+  
+    res.status(500).json({
+      message: "Error al subir videos",
+      error: message
+    });
   }
 };
