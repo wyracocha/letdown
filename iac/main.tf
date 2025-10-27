@@ -100,7 +100,7 @@ resource "azurerm_storage_account" "stfront" {
 
 resource "azurerm_storage_account_static_website" "website" {
   storage_account_id = azurerm_storage_account.stfront.id
-  error_404_document = "404.html"
+  error_404_document = "index.html"
   index_document     = "index.html"
 }
 
@@ -123,6 +123,7 @@ resource "azurerm_storage_blob" "site_blobs" {
   depends_on = [ azurerm_storage_account_static_website.website ]
 
 }
+
 
 
 
