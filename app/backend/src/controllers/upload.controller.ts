@@ -50,6 +50,6 @@ export const uploadVideos = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error("Error al subir a Azure:", error);
-    res.status(500).json({ message: "Error al subir videos", error: error.message });
+    res.status(500).json({ message: "Error al subir videos", error });
   }
 };
